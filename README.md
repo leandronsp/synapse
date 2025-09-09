@@ -13,19 +13,29 @@ Synapse implements a neural-based computer processor where logic operations are 
 - **OR Gate**: Neural network trained for disjunction logic  
 - **XOR Gate**: Neural network trained for exclusive OR logic (non-linear separation)
 
-Each gate is automatically trained for 10,000 epochs when instantiated and can compute boolean operations on floating-point inputs.
+### Neural Arithmetic Components
+- **Half Adder**: Combines XOR and AND gates to perform single-bit addition
+  - Sum = A XOR B (difference detection)
+  - Carry = A AND B (overflow detection)
+
+All neural components are automatically trained when instantiated and perform computations using trained neural networks.
 
 ### Usage
 
 ```rust
 use synapse::gates::{LogicGate, GateType};
+use synapse::half_adder::HalfAdder;
 
-// Create and use neural gates
+// Neural gates
 let and_gate = LogicGate::new(GateType::AND);
 let result = and_gate.compute(vec![1.0, 1.0]); // ~1.0
 
 let xor_gate = LogicGate::new(GateType::XOR);
 let result = xor_gate.compute(vec![1.0, 0.0]); // ~1.0
+
+// Neural half adder
+let half_adder = HalfAdder::new();
+let result = half_adder.compute(true, true); // HalfAdderResult { sum: false, carry: true }
 ```
 
 ### Testing
@@ -41,11 +51,13 @@ All neural gates are tested against their expected truth tables.
 ```
 src/
 ├── gates.rs          # Neural logic gate implementations
+├── half_adder.rs     # Neural half adder implementation  
 ├── lib.rs            # Module exports
 └── main.rs           # XOR training demonstration
 
 tests/
-└── gates_test.rs     # Neural gate functionality tests
+├── gates_test.rs     # Neural gate functionality tests
+└── half_adder_test.rs # Neural half adder tests
 
 docs/
 └── XOR.md           # XOR neural network architecture explanation
@@ -54,8 +66,7 @@ docs/
 ## Next Steps
 
 ### Arithmetic Components
-- Half Adder (XOR + AND gates)
-- Full Adder (2 Half Adders + OR gate)
+- Full Adder (2 Half Adders + OR gate)  
 - 4-bit ALU (arithmetic and logic operations)
 
 ### Memory & Control

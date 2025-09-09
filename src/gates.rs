@@ -102,3 +102,4 @@ fn create_xor_network() -> NeuralNetwork {
     ];
     NeuralNetwork::new(layers)
 }
+
