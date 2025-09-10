@@ -17,6 +17,9 @@ Synapse implements a neural-based computer processor where logic operations are 
 - **Half Adder**: Combines XOR and AND gates to perform single-bit addition
   - Sum = A XOR B (difference detection)
   - Carry = A AND B (overflow detection)
+- **Full Adder**: Uses two half adders and OR gate for three-input addition
+  - Handles A + B + Carry_in for multi-bit arithmetic
+  - Combines carry outputs: Carry1 OR Carry2
 
 All neural components are automatically trained when instantiated and perform computations using trained neural networks.
 
@@ -25,17 +28,18 @@ All neural components are automatically trained when instantiated and perform co
 ```rust
 use synapse::gates::{LogicGate, GateType};
 use synapse::half_adder::HalfAdder;
+use synapse::full_adder::FullAdder;
 
 // Neural gates
 let and_gate = LogicGate::new(GateType::AND);
 let result = and_gate.compute(vec![1.0, 1.0]); // ~1.0
 
-let xor_gate = LogicGate::new(GateType::XOR);
-let result = xor_gate.compute(vec![1.0, 0.0]); // ~1.0
-
-// Neural half adder
+// Neural arithmetic
 let half_adder = HalfAdder::new();
 let result = half_adder.compute(true, true); // HalfAdderResult { sum: false, carry: true }
+
+let full_adder = FullAdder::new();
+let result = full_adder.compute(true, true, true); // FullAdderResult { sum: true, carry: true }
 ```
 
 ### Testing
@@ -51,13 +55,15 @@ All neural gates are tested against their expected truth tables.
 ```
 src/
 ├── gates.rs          # Neural logic gate implementations
-├── half_adder.rs     # Neural half adder implementation  
+├── half_adder.rs     # Neural half adder implementation
+├── full_adder.rs     # Neural full adder implementation  
 ├── lib.rs            # Module exports
 └── main.rs           # XOR training demonstration
 
 tests/
 ├── gates_test.rs     # Neural gate functionality tests
-└── half_adder_test.rs # Neural half adder tests
+├── half_adder_test.rs # Neural half adder tests
+└── full_adder_test.rs # Neural full adder tests
 
 docs/
 └── XOR.md           # XOR neural network architecture explanation
@@ -66,7 +72,6 @@ docs/
 ## Next Steps
 
 ### Arithmetic Components
-- Full Adder (2 Half Adders + OR gate)  
 - 4-bit ALU (arithmetic and logic operations)
 
 ### Memory & Control
