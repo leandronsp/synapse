@@ -44,3 +44,4 @@ impl Default for HalfAdder {
         Self::new()
     }
 }
+
