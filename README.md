@@ -42,9 +42,11 @@ All neural components are automatically trained when instantiated and perform co
 
 ```rust
 use synapse::cpu::CPU;
-use synapse::alu::{ALU, ALUOperation};
 
-// Complete Neural CPU
+// Complete Neural CPU - run the demo
+cargo run
+
+// Individual operations
 let mut cpu = CPU::new();
 
 // Program: Add 5 + 3 and store result
@@ -60,11 +62,36 @@ cpu.load_program(&program);
 cpu.run();
 
 assert_eq!(cpu.memory.read(0xE), 8);  // Result: 5 + 3 = 8
+```
 
-// Individual Neural Components
-let alu = ALU::new();
-let result = alu.compute(5, 3, ALUOperation::Add);      // ALUResult { result: 8, carry: false, zero: false }
-let result = alu.compute(8, 3, ALUOperation::Subtract); // ALUResult { result: 5, carry: true, zero: false }
+### Demo Output
+
+Run `cargo run` to see a comprehensive demonstration:
+
+```
+=== Synapse Neural CPU - Operations Demo ===
+
++------------------+-----------+-----------+-----------+-----------------+
+|    Operation     |     A     |     B     |  Result   |      Notes      |
++------------------+-----------+-----------+-----------+-----------------+
+| ADD   5 +  3     |     5     |     3     |     8     | Basic addition  |
+| ADD   7 +  8     |     7     |     8     |    15     | Within 4-bit range |
+| ADD  15 +  1     |    15     |     1     |    16     | 4-bit overflow  |
+| ADD  12 +  7     |    12     |     7     |    19     | 19 > 15 overflow |
++------------------+-----------+-----------+-----------+-----------------+
+| SUB  10 -  3     |    10     |     3     |     7     | Basic subtraction |
+| SUB  15 -  9     |    15     |     9     |     6     | Larger subtraction |
+| SUB   5 -  8     |     5     |     8     |    13     | Underflow (wrap) |
++------------------+-----------+-----------+-----------+-----------------+
+|  25 +  17        |   1, 9    |   1, 1    |    42     | 25 + 17 = 42    |
+|  50 +  25        |   3, 2    |   1, 9    |    75     | 50 + 25 = 75    |
+| 100 +  55        |   6, 4    |   3, 7    |   155     | 100 + 55 = 155  |
+| 200 -  50        |  12, 8    |   3, 2    |   150     | 200 - 50 = 150  |
+| 128 -  64        |   8, 0    |   4, 0    |    64     | 128 - 64 = 64   |
++------------------+-----------+-----------+-----------+-----------------+
+
+✓ Neural CPU operations completed!
+  All arithmetic performed using trained neural networks!
 ```
 
 ### Testing
