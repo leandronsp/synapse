@@ -4,3 +4,4 @@ pub mod full_adder;
 pub mod alu;
 pub mod memory;
 pub mod registers;
+pub mod cpu;
